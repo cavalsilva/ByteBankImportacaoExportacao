@@ -13,32 +13,26 @@ namespace ByteBankImportacaoExportacao
         {
             var arquivo = "contas.txt";
 
-            var fluxoDoArquivo = new FileStream(arquivo, FileMode.Open);
-
-            var buffer = new byte[1024];
-
-            var quantidadeDeBytesLidos = -1;
-            while (quantidadeDeBytesLidos != 0)
+            //Quando existir um using abaixo o outro, não é necessário ter {} nos acimas
+            using (var fluxoDoArquivo = new FileStream(arquivo, FileMode.Open))
+            using (var leitor = new StreamReader(fluxoDoArquivo))
             {
-                quantidadeDeBytesLidos = fluxoDoArquivo.Read(buffer, 0, 1024);
-                EscreverBuffer(buffer);
+                while (!leitor.EndOfStream)
+                {
+                    var linha = leitor.ReadLine();
+                    Console.WriteLine(linha);
+                }
             }
 
             Console.ReadLine();
         }
 
-        static void EscreverBuffer(byte[] buffer)
-        {
-            var encoding = new UTF8Encoding();
-            var texto = encoding.GetString(buffer);
+        //static void EscreverBuffer(byte[] buffer, int bytesLidos)
+        //{
+        //    var encoding = new UTF8Encoding();
+        //    var texto = encoding.GetString(buffer, 0, bytesLidos);
 
-            Console.Write(texto);
-
-            //foreach (var meuByte in buffer)
-            //{
-            //    Console.Write(meuByte);
-            //    Console.Write(" ");
-            //}
-        }
+        //    Console.Write(texto);
+        //}
     }
 }
